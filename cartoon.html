@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cartoon</title>
+</head>
+
+<div id="wrapper">
+    <div class="screen" id="screen1">
+        <h2>Catch The Character</h2>
+        <button id="start">Start The Game</button>
+    </div>
+    <div class="screen" id="screen2">
+        <div class="photo-wrapper">
+            <a href=""><img src="C:\Users\HP\Downloads\images\images\chacha-chaudhary.png" alt="chacha-chaudhary"></a>
+            <a href=""><img src="C:\Users\HP\Downloads\images\images\nagraj.png" alt="nagraj"></a>
+            <a href=""><img src="C:\Users\HP\Downloads\images\images\shaktimaan.png" alt="shaktimaan"></a>
+        </div>
+    </div>
+</div>
+<div class="screen" id="screen3">
+    <div class="top">
+        <p id="timer">Time: <span></span></p>
+        <p id="score">Score: <span></span></p>
+        <p id="seconds">seconds:</p>
+    </div>
+    <div class="main"></div>
+</div>
+</div>
+<script src="index.js"></script>
+
+<body>
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+    body{
+        background: #314755;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #26a0da, #314755);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #26a0da, #314755); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        
+    }
+    .screen{
+        height: 100vh;
+        display: flex;
+    }
+    #screen1{
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    #screen1 h2{
+        margin-bottom: 2rem;
+        font-size: 3rem;
+    }
+    #screen1 button{
+        border: 2px solid #000;
+        background-color: #000;
+        padding: 1rem;
+        color: #fff;
+        font-size: 1.25rem;
+        cursor: pointer;
+        transition: all 0.45s;
+    }
+    #screen1 button:hover{
+        background-color: #fff;
+        color: #000;
+    }
+    #screen2{
+        display: none;
+    }
+    #screen2 .photo-wrapper{
+        display: flex;
+        margin: 0 auto;
+        width: 600px;
+        height: 100vh;
+        padding: 1rem;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    #screen2 img{
+        width: 150px;
+        height: 150px;
+        margin: 0 1rem;
+    }
+    #screen2 img{
+    width: 150px;
+    height: 150px;
+    margin: 0 1rem;
+}
+#screen3 .main{
+    position: relative;
+}
+#screen3 img{
+    width: 70px;
+    height: 70px;
+    position: absolute;
+}
+    </style>
+    <script>
+const startButton = document.querySelector("#screen1 button");
+const screen1 = document.querySelector("#screen1");
+const screen2 = document.querySelector("#screen2");
+const screen3 = document.querySelector("#screen3");
+const characters = document.querySelectorAll("#screen2 img");
+const mainDiv = document.querySelector(".main");
+const timerDiv=document.querySelectorAll(".top span")
+
+
+startButton.onclick = () => {
+  screen1.style.display = "none";
+  screen2.style.display = "flex";
+};
+
+for (let i = 0; i < characters.length; i++) {
+  characters[i].onclick = (e) => {
+    e.preventDefault();
+    console.log(e);
+    startTheGame(e);
+  };
+}
+
+function startTheGame(event) {
+  screen2.style.display = "none";
+  screen3.style.display = "flex";
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+
+  const interval = setInterval(() => {
+    const thumbnail = document.createElement("img"); //<img >
+    // thumbnail.setAttribute("src", )
+    // thumbnail.src = characters[i].src
+    thumbnail.src = event.target.src;
+    const xPosition = Math.random() * screenWidth;
+    const yPosition = Math.random() * screenHeight;
+
+    thumbnail.style.top = yPosition + "px"
+    thumbnail.style.left = xPosition + "px"
+
+    mainDiv.append(thumbnail);
+
+    timerDiv[0].innerHTML =appendZero(Number(timerDiv[0].innerHTML) + 1);
+
+
+    function appendZero(zero){
+if(timerDiv[0].innerHTML<9){
+return "0"+zero;
+}
+
+if(timerDiv[0].innerHTML>=59){
+return "00";
+}
+else return zero;
+    }
+
+    if(timerDiv[0].innerHTML==60){
+      clearInterval(interval)
+    }
+
+    thumbnail.onclick = () => {
+      removeImage(thumbnail);
+      timerDiv[1].innerHTML = appendZero(Number(timerDiv[1].innerHTML) + 1);
+  };
+
+  function removeImage(image) {
+      image.style.display = "none";
+  }
+
+  function appendZero(Zero) {
+      if (Zero < 10)
+          return "0" + Zero;
+      if (Zero >= 60) {
+          return "00";
+      }
+      else
+          return Zero;
+  }
+    
+  }, 1000);
+}
+
+    </script>
+</body>
+</html>
